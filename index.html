@@ -2,264 +2,1343 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>ISM Automations – Automatisation IA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="ISM Automations – Automatisation IA, emails, Make, support client. Gagnez du temps grâce à l’IA." />
-
+  <title>ISM Automations — Automatisation IA</title>
+  <meta name="description" content="ISM Automations — Automatisation IA, emails, Make, support client. Gagnez du temps grâce à l’IA."/>
   <style>
     :root{
-      --primary:#4f46e5;
-      --secondary:#06b6d4;
-      --bg:#0f172a;
-      --card:#111827;
-      --text:#e5e7eb;
-      --muted:#9ca3af;
-      --accent:#22d3ee;
+      --bg0:#070A12;
+      --bg1:#0B1022;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.14);
+      --txt: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --muted2: rgba(255,255,255,.56);
+      --shadow: 0 20px 80px rgba(0,0,0,.45);
+      --grad: linear-gradient(90deg,#7C3AED,#06B6D4,#10B981);
+      --btn: linear-gradient(90deg,#7C3AED,#06B6D4);
+      --btn2: linear-gradient(90deg,#10B981,#06B6D4);
+      --ring: 0 0 0 6px rgba(124,58,237,.15);
+      --radius: 22px;
+      --radius2: 18px;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
     body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont;
-      background:linear-gradient(180deg,#020617,#0f172a);
-      color:var(--text);
-      line-height:1.6;
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--txt);
+      background:
+        radial-gradient(1000px 700px at 15% 10%, rgba(124,58,237,.28), transparent 60%),
+        radial-gradient(900px 650px at 85% 20%, rgba(6,182,212,.22), transparent 55%),
+        radial-gradient(1000px 700px at 40% 95%, rgba(16,185,129,.20), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
     }
 
-    header{
-      padding:80px 20px;
-      text-align:center;
-      background:radial-gradient(circle at top,#1e293b,#020617);
-      animation:fadeIn 1.2s ease;
+    a{ color:inherit; text-decoration:none; }
+    .container{ max-width:1120px; margin:0 auto; padding:0 18px; }
+
+    /* Animated blobs */
+    .blobs{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+    .blob{
+      position:absolute;
+      width:520px; height:520px; border-radius:50%;
+      filter: blur(42px);
+      opacity:.9;
+      mix-blend-mode: screen;
+      transform: translate3d(0,0,0);
+      animation: float 10s ease-in-out infinite;
+    }
+    .b1{ left:-140px; top:-160px; background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.75), transparent 60%); }
+    .b2{ right:-180px; top:60px; background: radial-gradient(circle at 30% 30%, rgba(6,182,212,.62), transparent 60%); animation-duration: 12s; }
+    .b3{ left:30%; bottom:-220px; background: radial-gradient(circle at 30% 30%, rgba(16,185,129,.55), transparent 60%); animation-duration: 14s; }
+    @keyframes float{
+      0%{ transform: translate(0,0) scale(.98); }
+      50%{ transform: translate(10px,18px) scale(1.02); }
+      100%{ transform: translate(0,0) scale(.98); }
     }
 
-    header h1{
-      font-size:2.8rem;
-      background:linear-gradient(90deg,var(--accent),var(--primary));
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(10,12,24,.60);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 220px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.14);
+      display:grid; place-items:center;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .spark{
+      width:18px; height:18px;
+      background: var(--grad);
+      border-radius:6px;
+      filter: drop-shadow(0 10px 18px rgba(124,58,237,.35));
+      transform: rotate(12deg);
+    }
+    .brand-title{ font-weight:700; letter-spacing:.2px; line-height:1.1; }
+    .brand-sub{ font-size:12px; color:var(--muted2); margin-top:2px; }
+
+    .nav{
+      display:none;
+      gap:18px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav a{
+      font-size:13px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:12px;
+      transition: .2s ease;
+    }
+    .nav a:hover{ color:var(--txt); background: rgba(255,255,255,.06); }
+
+    .actions{ display:flex; gap:10px; align-items:center; }
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      padding:10px 14px;
+      font-weight:600;
+      font-size:13px;
+      cursor:pointer;
+      transition: .2s ease;
+      background: rgba(255,255,255,.05);
+      color: var(--txt);
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: var(--ring); }
+    .btn.primary{
+      background: var(--btn);
+      border-color: transparent;
+    }
+    .btn.primary:hover{ box-shadow: 0 18px 55px rgba(6,182,212,.22), 0 18px 55px rgba(124,58,237,.22); }
+    .btn.secondary{
+      background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    }
+
+    @media (min-width: 900px){
+      .nav{ display:flex; }
+    }
+
+    /* Sections */
+    section{ padding:64px 0; }
+    .hero{
+      padding-top:44px;
+      padding-bottom:58px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:22px;
+      align-items:center;
+    }
+    @media (min-width: 980px){
+      .grid2{ grid-template-columns: 1.05fr .95fr; gap:34px; }
+    }
+
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      border-radius: 999px;
+      padding:8px 12px;
+      font-size:12px;
+      width: fit-content;
+    }
+    .pill-dot{
+      width:10px; height:10px; border-radius: 99px;
+      background: var(--grad);
+      box-shadow: 0 14px 40px rgba(124,58,237,.25);
+    }
+
+    h1{
+      margin:12px 0 10px;
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+    }
+    .grad{
+      background: var(--grad);
       -webkit-background-clip:text;
+      background-clip:text;
       color:transparent;
     }
-
-    header p{
-      max-width:700px;
-      margin:20px auto;
-      color:var(--muted);
-      font-size:1.1rem;
+    .lead{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 56ch;
+    }
+    .cta-row{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:18px;
+      width: fit-content;
+    }
+    @media (min-width: 520px){
+      .cta-row{ flex-direction:row; }
     }
 
-    .btn{
-      display:inline-block;
-      margin:10px;
-      padding:14px 26px;
-      border-radius:999px;
-      background:linear-gradient(90deg,var(--primary),var(--secondary));
-      color:white;
-      text-decoration:none;
-      font-weight:600;
-      transition:.3s;
+    .trust{
+      margin-top:14px;
+      font-size:12px;
+      color: var(--muted2);
+      line-height: 1.6;
     }
-
-    .btn:hover{transform:scale(1.05);opacity:.9}
-
-    section{
-      padding:70px 20px;
-      max-width:1100px;
-      margin:auto;
-    }
-
-    h2{
-      text-align:center;
-      font-size:2rem;
-      margin-bottom:20px;
-    }
-
-    .subtitle{
-      text-align:center;
-      color:var(--muted);
-      max-width:700px;
-      margin:0 auto 50px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
-    }
-
-    .card{
-      background:linear-gradient(180deg,#020617,#020617) padding-box,
-                 linear-gradient(120deg,var(--primary),var(--accent)) border-box;
-      border:1px solid transparent;
-      border-radius:20px;
-      padding:25px;
-      transition:.3s;
-    }
-
-    .card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 0 40px rgba(34,211,238,.15);
-    }
-
-    .card h3{
-      margin-bottom:10px;
-      color:var(--accent);
-    }
-
-    ul{
-      list-style:none;
+    .badges{
+      display:flex; flex-wrap:wrap; gap:8px;
       margin-top:10px;
     }
-
-    ul li::before{
-      content:"✔ ";
-      color:var(--accent);
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      font-size:12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.82);
+    }
+    .badge i{
+      width:10px; height:10px; border-radius:99px;
+      background: var(--btn2);
+      display:inline-block;
     }
 
+    /* Card */
+    .card{
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-inner{ padding:18px; }
+    .card h3{ margin:0 0 10px; font-size:15px; color: rgba(255,255,255,.92); }
+    .mini{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      margin-top:10px;
+    }
+    .mini-icon{
+      width:28px; height:28px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      display:grid; place-items:center;
+      flex:0 0 auto;
+    }
+    .mini-icon span{
+      width:12px; height:12px; border-radius:5px;
+      background: var(--grad);
+      display:block;
+      transform: rotate(12deg);
+    }
+    .mini-title{ font-weight:700; font-size:13px; }
+    .mini-sub{ margin-top:2px; font-size:12px; color: var(--muted2); line-height:1.5; }
+
+    /* Floating chips */
+    .floatchip{
+      position:absolute;
+      display:none;
+      gap:8px;
+      align-items:center;
+      font-size:12px;
+      color: rgba(255,255,255,.78);
+      background: rgba(10,12,24,.55);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding:10px 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      animation: bob 4.6s ease-in-out infinite;
+    }
+    .floatchip b{ color: rgba(255,255,255,.92); }
+    @keyframes bob{
+      0%{ transform: translateY(0); }
+      50%{ transform: translateY(-8px); }
+      100%{ transform: translateY(0); }
+    }
+    @media (min-width: 980px){
+      .floatchip{ display:flex; }
+    }
+
+    /* Section titles */
+    .sec-title{
+      font-size: clamp(22px, 2.4vw, 34px);
+      margin:0;
+      letter-spacing:-0.3px;
+    }
+    .sec-sub{
+      color: var(--muted);
+      margin:10px 0 0;
+      line-height:1.7;
+    }
+
+    /* Grids */
+    .grid4{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+    }
+    @media (min-width: 700px){
+      .grid4{ grid-template-columns:1fr 1fr; }
+    }
+    @media (min-width: 1040px){
+      .grid4{ grid-template-columns:1fr 1fr 1fr 1fr; }
+    }
+
+    .service{
+      height:100%;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      padding:16px;
+      transition: .2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .service:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.07);
+      box-shadow: 0 18px 55px rgba(0,0,0,.35);
+    }
+    .service::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(240px 140px at 0% 0%, rgba(124,58,237,.22), transparent 55%),
+                  radial-gradient(240px 140px at 100% 0%, rgba(6,182,212,.18), transparent 55%);
+      opacity:0;
+      transition:.2s ease;
+    }
+    .service:hover::before{ opacity:1; }
+    .service *{ position:relative; z-index:1; }
+    .service h4{ margin:10px 0 6px; font-size:14px; }
+    .service p{ margin:0; color: var(--muted2); font-size:13px; line-height:1.65; }
+    .list{ margin:12px 0 0; padding:0; list-style:none; display:grid; gap:8px; }
+    .list li{ display:flex; gap:10px; align-items:flex-start; color: rgba(255,255,255,.82); font-size:12.5px; }
+    .tick{
+      width:18px; height:18px; border-radius:9px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      display:grid; place-items:center;
+      margin-top:1px;
+      flex:0 0 auto;
+    }
+    .tick i{ width:8px; height:8px; border-radius:3px; background: var(--btn2); display:block; }
+
+    /* Steps */
+    .steps{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+    }
+    @media (min-width: 980px){
+      .steps{ grid-template-columns: repeat(4, 1fr); }
+    }
+    .step{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      padding:16px;
+      transition: .2s ease;
+    }
+    .step:hover{ transform: translateY(-2px); background: rgba(255,255,255,.07); }
+    .step .k{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; color: rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius:999px; padding:6px 10px;
+      margin-bottom:10px;
+    }
+    .step h4{ margin:0 0 8px; font-size:14px; }
+    .step p{ margin:0; color: var(--muted2); font-size:13px; line-height:1.65; }
+
+    /* Pricing */
     .pricing{
-      text-align:center;
+      margin-top:18px;
+      display:grid; gap:14px;
+      grid-template-columns:1fr;
+    }
+    @media (min-width: 980px){
+      .pricing{ grid-template-columns: repeat(3, 1fr); }
+    }
+    .plan{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      padding:18px;
+      transition: .2s ease;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+    }
+    .plan:hover{ transform: translateY(-2px); }
+    .plan.featured{
+      border-color: rgba(255,255,255,.22);
+      outline: 1px solid rgba(6,182,212,.18);
+      box-shadow: 0 26px 80px rgba(6,182,212,.12), 0 26px 80px rgba(124,58,237,.12);
+    }
+    .plan .top{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+    }
+    .tag{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.84);
+      white-space:nowrap;
+    }
+    .price{ font-size:34px; font-weight:800; margin:10px 0 2px; letter-spacing:-0.5px; }
+    .note{ font-size:12px; color: var(--muted2); margin-bottom:10px; }
+    .plan p{ margin:0; color: var(--muted); font-size:13px; line-height:1.6; }
+    .plan ul{ margin:14px 0 0; padding:0; list-style:none; display:grid; gap:8px; }
+    .plan li{ display:flex; gap:10px; color: rgba(255,255,255,.82); font-size:12.5px; align-items:flex-start; }
+    .plan .btnrow{ margin-top:14px; }
+    .full{ width:100%; display:inline-flex; justify-content:center; }
+
+    /* FAQ */
+    .faq{ margin-top:18px; display:grid; gap:12px; }
+    details{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      padding:14px 16px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:700;
+      color: rgba(255,255,255,.92);
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .chev{
+      width:26px; height:26px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      display:grid; place-items:center;
+      transition:.2s ease;
+      flex:0 0 auto;
+    }
+    details[open] .chev{ transform: rotate(180deg); }
+    details p{
+      margin:10px 0 0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size:13px;
     }
 
-    .price{
-      font-size:2.2rem;
-      color:var(--accent);
-      margin:10px 0;
+    /* Contact */
+    .contact{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-top:18px;
+    }
+    @media (min-width: 980px){
+      .contact{ grid-template-columns: 1.2fr .8fr; }
+    }
+
+    .form{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      padding:18px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.28);
+    }
+    .row{ display:grid; grid-template-columns:1fr; gap:10px; }
+    @media (min-width: 640px){
+      .row{ grid-template-columns:1fr 1fr; }
+    }
+    input, textarea{
+      width:100%;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(10,12,24,.35);
+      color: rgba(255,255,255,.92);
+      padding:12px 12px;
+      outline:none;
+      transition: .2s ease;
+      font-size:13px;
+    }
+    input:focus, textarea:focus{
+      box-shadow: var(--ring);
+      border-color: rgba(6,182,212,.25);
+    }
+    textarea{ resize: vertical; min-height: 130px; }
+    .hint{ margin-top:10px; font-size:12px; color: var(--muted2); }
+
+    .side{
+      display:grid; gap:14px;
+    }
+    .panel{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      padding:18px;
+    }
+    .panel h4{ margin:0 0 10px; font-size:14px; }
+    .kpi{
+      display:grid; gap:10px;
+    }
+    .kpi div{
+      padding:12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+      font-size:13px;
     }
 
     footer{
-      padding:30px;
-      text-align:center;
-      border-top:1px solid #1e293b;
-      color:var(--muted);
+      padding:26px 0;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: var(--muted2);
+      font-size:13px;
     }
+    .foot{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    @media (min-width: 900px){
+      .foot{ flex-direction:row; align-items:center; }
+    }
+    .footlinks{ display:flex; gap:10px; flex-wrap:wrap; }
+    .footlinks a{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.72);
+    }
+    .footlinks a:hover{ color: rgba(255,255,255,.92); }
 
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(20px)}
-      to{opacity:1;transform:none}
-    }
+    /* Reveal on scroll */
+    .reveal{ opacity:0; transform: translateY(10px); transition: .55s ease; }
+    .reveal.show{ opacity:1; transform: translateY(0); }
+
   </style>
 </head>
-
 <body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
 
-<header>
-  <h1>ISM Automations</h1>
-  <p>
-    Automatisation IA pour emails, support client et processus internes.  
-    Gagnez des heures chaque semaine grâce à l’intelligence artificielle.
-  </p>
-  <a href="#contact" class="btn">Audit gratuit</a>
-  <a href="#services" class="btn">Nos services</a>
-</header>
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="logo"><span class="spark"></span></div>
+          <div>
+            <div class="brand-title">ISM Automations</div>
+            <div class="brand-sub">AI Automation • Gmail • Make • FR/NL</div>
+          </div>
+        </div>
 
-<section id="services">
-  <h2>Nos services</h2>
-  <p class="subtitle">
-    Nous utilisons Make + IA pour automatiser intelligemment votre entreprise,
-    sans réponses robotisées.
-  </p>
+        <nav class="nav" id="nav">
+          <a href="#services" data-i18n="nav.services">Services</a>
+          <a href="#usecases" data-i18n="nav.usecases">Cas d’usage</a>
+          <a href="#process" data-i18n="nav.process">Méthode</a>
+          <a href="#pricing" data-i18n="nav.pricing">Tarifs</a>
+          <a href="#faq" data-i18n="nav.faq">FAQ</a>
+          <a href="#contact" data-i18n="nav.contact">Contact</a>
+        </nav>
 
-  <div class="grid">
-    <div class="card">
-      <h3>📧 Triage intelligent des emails</h3>
-      <p>L’IA classe, résume et détecte l’urgence automatiquement.</p>
-      <ul>
-        <li>Urgent / Non urgent</li>
-        <li>Résumé automatique</li>
-        <li>Tags Gmail</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>✍️ Brouillons IA</h3>
-      <p>L’IA écrit, vous validez. Zéro risque.</p>
-      <ul>
-        <li>Ton professionnel</li>
-        <li>Signature automatique</li>
-        <li>Templates personnalisés</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>⚙️ Automatisation Make</h3>
-      <p>Scénarios prêts à l’emploi, adaptés à votre business.</p>
-      <ul>
-        <li>Formulaire → CRM</li>
-        <li>Email → Google Sheets</li>
-        <li>Slack / Teams</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>🔐 Sécurité & contrôle</h3>
-      <p>Règles strictes pour éviter toute erreur.</p>
-      <ul>
-        <li>Validation humaine</li>
-        <li>Seuil de confiance IA</li>
-        <li>Logs & suivi</li>
-      </ul>
+        <div class="actions">
+          <button class="btn secondary" id="langBtn" title="FR/NL">FR</button>
+          <a class="btn primary" href="#contact" data-i18n="hero.cta1">Audit gratuit</a>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
-<section id="pricing" class="pricing">
-  <h2>Tarifs</h2>
-  <p class="subtitle">Clairs, transparents, évolutifs.</p>
+  <section class="hero">
+    <div class="container">
+      <div class="grid2">
+        <div class="reveal">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span data-i18n="hero.badge">Automatisation IA • Email • Support client • Process</span>
+          </div>
 
-  <div class="grid">
-    <div class="card">
-      <h3>Starter</h3>
-      <p class="price">€299</p>
-      <p>Mise en place</p>
-      <ul>
-        <li>1 boîte mail</li>
-        <li>Triage IA</li>
-        <li>Résumé + urgence</li>
-      </ul>
+          <h1><span class="grad" data-i18n="hero.title">Automatise tes emails et tes processus avec l’IA</span></h1>
+          <p class="lead" data-i18n="hero.subtitle">
+            Je mets en place des automatisations IA (Make, Gmail, Google Workspace) pour que ton entreprise réponde plus vite, trie mieux, et gagne des heures chaque semaine.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#contact" data-i18n="hero.cta1">Demander un audit gratuit</a>
+            <a class="btn" href="#services" data-i18n="hero.cta2">Voir les services</a>
+          </div>
+
+          <div class="trust" data-i18n="hero.trust">
+            Réponses automatiques sécurisées (brouillons + validation) • Tri URGENT/NON URGENT • Intégration en 48–72h
+          </div>
+
+          <div class="badges">
+            <span class="badge"><i></i> Make</span>
+            <span class="badge"><i></i> Gmail</span>
+            <span class="badge"><i></i> Google Workspace</span>
+          </div>
+        </div>
+
+        <div class="reveal" style="position:relative;">
+          <div class="floatchip" style="left:22px; top:-10px;">
+            ✨ <b data-i18n="chips.fast">+30% plus rapide</b>
+          </div>
+          <div class="floatchip" style="right:18px; bottom:-14px; animation-duration:5.2s;">
+            ⚡ <b data-i18n="chips.setup">48–72h setup</b>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <h3 data-i18n="proof.title">Exemple de flux (pro)</h3>
+
+              <div class="mini">
+                <div class="mini-icon"><span></span></div>
+                <div>
+                  <div class="mini-title" data-i18n="proof.a">Triage intelligent</div>
+                  <div class="mini-sub" data-i18n="proof.a2">Catégorie, urgence, tags, routage</div>
+                </div>
+              </div>
+
+              <div class="mini">
+                <div class="mini-icon"><span></span></div>
+                <div>
+                  <div class="mini-title" data-i18n="proof.b">Brouillons automatiques</div>
+                  <div class="mini-sub" data-i18n="proof.b2">L’IA écrit, l’humain valide</div>
+                </div>
+              </div>
+
+              <div class="mini">
+                <div class="mini-icon"><span></span></div>
+                <div>
+                  <div class="mini-title" data-i18n="proof.c">Réponse auto (cas simples)</div>
+                  <div class="mini-sub" data-i18n="proof.c2">Seulement cas simples + confiance élevée</div>
+                </div>
+              </div>
+
+              <div class="mini">
+                <div class="mini-icon"><span></span></div>
+                <div>
+                  <div class="mini-title" data-i18n="proof.d">Tableau de suivi</div>
+                  <div class="mini-sub" data-i18n="proof.d2">Suivi du volume & performance</div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;">
+                <div class="service" style="padding:14px;">
+                  <h4 style="margin:0 0 6px;">Email</h4>
+                  <p style="margin:0; color:rgba(255,255,255,.82); font-size:13px;">ismaeltahiri2909@gmail.com</p>
+                </div>
+                <div class="service" style="padding:14px;">
+                  <h4 style="margin:0 0 6px;" data-i18n="contact.phone">Téléphone</h4>
+                  <p style="margin:0; color:rgba(255,255,255,.82); font-size:13px;">+32 492 47 10 19</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="card">
-      <h3>Pro</h3>
-      <p class="price">€649</p>
-      <p>Mise en place</p>
-      <ul>
-        <li>Brouillons IA</li>
-        <li>Dashboard</li>
-        <li>Ton personnalisé</li>
-      </ul>
+  <section id="services">
+    <div class="container">
+      <h2 class="sec-title reveal" data-i18n="services.title">Ce que je mets en place</h2>
+      <p class="sec-sub reveal" data-i18n="services.subtitle">
+        Des automatisations utiles, faciles à piloter, avec des règles pour éviter les réponses “robot”.
+      </p>
+
+      <div class="reveal" style="margin-top:14px; border-radius:22px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); padding:14px; color:rgba(255,255,255,.78);">
+        <b data-i18n="services.templatesTitle">Templates Make utilisés :</b>
+        <span data-i18n="services.templates">
+          Email intelligent (tri + réponse), Formulaire client → Google Sheets, Lead → CRM → rappel automatique, Facture → suivi paiement, Support client → Slack/Teams.
+        </span>
+      </div>
+
+      <div class="grid4" style="margin-top:16px;">
+        <div class="service reveal">
+          <h4 data-i18n="services.s1.t">📥 Triage d’emails par IA</h4>
+          <p data-i18n="services.s1.d">Catégorisation, résumé, urgence et labels. Tu vois tout sans ouvrir 200 emails.</p>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="services.s1.b1">Catégorie + priorité</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s1.b2">Résumé 2 lignes</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s1.b3">Routage auto</span></li>
+          </ul>
+        </div>
+
+        <div class="service reveal">
+          <h4 data-i18n="services.s2.t">📝 Brouillons IA</h4>
+          <p data-i18n="services.s2.d">L’IA rédige, toi tu valides. Zéro risque, énorme gain de temps.</p>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="services.s2.b1">Ton pro / marque</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s2.b2">Signature auto</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s2.b3">Templates par cas</span></li>
+          </ul>
+        </div>
+
+        <div class="service reveal">
+          <h4 data-i18n="services.s3.t">⚙️ Automatisation Make</h4>
+          <p data-i18n="services.s3.d">Formulaire → Sheet/CRM → Slack/Teams → tâche → email. Clair et rapide.</p>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="services.s3.b1">Make + Gmail</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s3.b2">Google Workspace</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s3.b3">Dashboard</span></li>
+          </ul>
+        </div>
+
+        <div class="service reveal">
+          <h4 data-i18n="services.s4.t">🛡️ Sécurité & contrôle</h4>
+          <p data-i18n="services.s4.d">Auto-reply seulement si cas simple + confiance élevée. Sinon validation humaine.</p>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="services.s4.b1">Seuil confiance</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s4.b2">Blocage cas sensibles</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="services.s4.b3">Logs & suivi</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="card">
-      <h3>Business</h3>
-      <p class="price">Sur devis</p>
-      <p>Automatisation avancée</p>
-      <ul>
-        <li>Multi-mails</li>
-        <li>CRM</li>
-        <li>Support prioritaire</li>
-      </ul>
+  <section id="usecases">
+    <div class="container">
+      <h2 class="sec-title reveal" data-i18n="usecases.title">Cas d’usage par métier</h2>
+      <p class="sec-sub reveal" data-i18n="usecases.subtitle">Des exemples concrets que nous déployons rapidement via Make + IA.</p>
+
+      <div class="grid4" style="margin-top:16px;">
+        <div class="service reveal">
+          <h4 data-i18n="usecases.c1.t">Garage</h4>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c1.b1">Devis & RDV</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c1.b2">Urgences (panne)</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c1.b3">Relances clients</span></li>
+          </ul>
+        </div>
+        <div class="service reveal">
+          <h4 data-i18n="usecases.c2.t">Restaurant</h4>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c2.b1">Réservations</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c2.b2">Horaires / FAQ</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c2.b3">Commandes</span></li>
+          </ul>
+        </div>
+        <div class="service reveal">
+          <h4 data-i18n="usecases.c3.t">E-commerce</h4>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c3.b1">SAV</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c3.b2">Livraison</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c3.b3">Retours</span></li>
+          </ul>
+        </div>
+        <div class="service reveal">
+          <h4 data-i18n="usecases.c4.t">Cabinet / Bureau</h4>
+          <ul class="list">
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c4.b1">Tri dossiers</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c4.b2">Docs/Drive</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="usecases.c4.b3">Priorités</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <p class="subtitle">
-    Parlez-nous de votre besoin, nous proposons une solution simple.
-  </p>
+  <section id="process">
+    <div class="container">
+      <h2 class="sec-title reveal" data-i18n="process.title">Méthode simple (et pro)</h2>
+      <p class="sec-sub reveal" data-i18n="process.subtitle">Setup rapide, règles claires, et amélioration continue.</p>
 
-  <div style="text-align:center">
-    <a class="btn" href="mailto:ismaeltahiri2909@gmail.com">
-      📩 Envoyer un email
-    </a>
-    <a class="btn" href="tel:+32492471019">
-      📞 Appeler
-    </a>
-  </div>
-</section>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="k">1 • <span data-i18n="process.s1.k">Audit</span></div>
+          <h4 data-i18n="process.s1.t">Audit (30 min)</h4>
+          <p data-i18n="process.s1.d">On regarde tes emails types, tes règles, et les risques. Objectif: quick wins.</p>
+        </div>
+        <div class="step reveal">
+          <div class="k">2 • <span data-i18n="process.s2.k">Prototype</span></div>
+          <h4 data-i18n="process.s2.t">Prototype (24–48h)</h4>
+          <p data-i18n="process.s2.d">Je construis une version test: tri + brouillons + tableau de suivi.</p>
+        </div>
+        <div class="step reveal">
+          <div class="k">3 • <span data-i18n="process.s3.k">Déploiement</span></div>
+          <h4 data-i18n="process.s3.t">Go-live</h4>
+          <p data-i18n="process.s3.d">Activation des règles, sécurité et formation rapide pour l’équipe.</p>
+        </div>
+        <div class="step reveal">
+          <div class="k">4 • <span data-i18n="process.s4.k">Optimisation</span></div>
+          <h4 data-i18n="process.s4.t">Optimisation</h4>
+          <p data-i18n="process.s4.d">Amélioration des prompts + ajout d’automatisations selon ton activité.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  © 2025 – ISM Automations • Automatisation IA • Belgique
-</footer>
+  <section id="pricing">
+    <div class="container">
+      <h2 class="sec-title reveal" data-i18n="pricing.title">Tarifs</h2>
+      <p class="sec-sub reveal" data-i18n="pricing.subtitle">Transparents. Tu peux commencer petit, puis évoluer.</p>
 
+      <div class="pricing">
+        <div class="plan reveal">
+          <div class="top">
+            <div>
+              <div style="font-weight:800;" data-i18n="pricing.p1.name">Starter</div>
+              <div style="color:var(--muted2); font-size:12px;" data-i18n="pricing.p1.desc">Triage + résumé + urgence + tags</div>
+            </div>
+            <span class="tag" data-i18n="pricing.setup">mise en place</span>
+          </div>
+          <div class="price">€299</div>
+          <div class="note" data-i18n="pricing.once">paiement unique</div>
+          <ul>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p1.b1">1 boîte mail</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p1.b2">Jusqu’à 6 catégories</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p1.b3">Tags + règles</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p1.b4">Documentation</span></li>
+          </ul>
+          <div class="btnrow">
+            <a class="btn full" href="#contact" data-i18n="pricing.choose">Choisir</a>
+          </div>
+        </div>
+
+        <div class="plan featured reveal">
+          <div class="top">
+            <div>
+              <div style="font-weight:800;" data-i18n="pricing.p2.name">Pro</div>
+              <div style="color:var(--muted2); font-size:12px;" data-i18n="pricing.p2.desc">Starter + brouillons + dashboard</div>
+            </div>
+            <span class="tag" data-i18n="pricing.reco">Recommandé</span>
+          </div>
+          <div class="price">€649</div>
+          <div class="note" data-i18n="pricing.once">paiement unique</div>
+          <ul>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p2.b1">1–2 boîtes mail</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p2.b2">Brouillons Gmail</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p2.b3">Ton de marque</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p2.b4">Tableau de suivi</span></li>
+          </ul>
+          <div class="btnrow">
+            <a class="btn primary full" href="#contact" data-i18n="pricing.choose">Choisir</a>
+          </div>
+        </div>
+
+        <div class="plan reveal">
+          <div class="top">
+            <div>
+              <div style="font-weight:800;" data-i18n="pricing.p3.name">Business</div>
+              <div style="color:var(--muted2); font-size:12px;" data-i18n="pricing.p3.desc">Routage avancé + CRM + KPI</div>
+            </div>
+            <span class="tag" data-i18n="pricing.quote">sur devis</span>
+          </div>
+          <div class="price" data-i18n="pricing.p3.price">Sur devis</div>
+          <div class="note" data-i18n="pricing.from">à partir de</div>
+          <ul>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p3.b1">Multi-boîtes</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p3.b2">Intégrations CRM</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p3.b3">Sécurité + escalade</span></li>
+            <li><span class="tick"><i></i></span><span data-i18n="pricing.p3.b4">SLA & reporting</span></li>
+          </ul>
+          <div class="btnrow">
+            <a class="btn full" href="#contact" data-i18n="pricing.quoteBtn">Demander un devis</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal" style="margin-top:14px;">
+        <h4 data-i18n="pricing.supportTitle">Support mensuel (option)</h4>
+        <div style="color:var(--muted); line-height:1.7; font-size:13px;" data-i18n="pricing.supportList">
+          Monitoring & corrections • Amélioration des prompts • Nouvelles automatisations • Support 48h
+        </div>
+        <div style="margin-top:10px;">
+          <span class="tag">€99–€249 / mois</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <h2 class="sec-title reveal" data-i18n="faq.title">FAQ</h2>
+      <p class="sec-sub reveal" data-i18n="faq.subtitle">Réponses rapides aux questions les plus fréquentes.</p>
+
+      <div class="faq">
+        <details class="reveal">
+          <summary><span data-i18n="faq.q1">Est-ce que l’IA répond à tout automatiquement ?</span><span class="chev">⌄</span></summary>
+          <p data-i18n="faq.a1">Non. Par défaut, on met en place des brouillons avec validation humaine. Les réponses automatiques sont activées uniquement pour des cas simples, avec un seuil de confiance élevé.</p>
+        </details>
+
+        <details class="reveal">
+          <summary><span data-i18n="faq.q2">Comment évitez-vous les erreurs ?</span><span class="chev">⌄</span></summary>
+          <p data-i18n="faq.a2">Règles de sécurité: demandes sensibles, mots-clés à risque, pièces jointes, et score de confiance. Si doute → validation humaine.</p>
+        </details>
+
+        <details class="reveal">
+          <summary><span data-i18n="faq.q3">Et si l’entreprise reçoit 200+ emails/jour ?</span><span class="chev">⌄</span></summary>
+          <p data-i18n="faq.a3">L’IA trie, résume et priorise automatiquement. L’équipe voit tout de suite: urgences, factures, support, demandes commerciales…</p>
+        </details>
+
+        <details class="reveal">
+          <summary><span data-i18n="faq.q4">Vous utilisez des templates Make ?</span><span class="chev">⌄</span></summary>
+          <p data-i18n="faq.a4">Oui. Templates Make (emails, formulaires, CRM, notifications) + personnalisation pour ton activité.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2 class="sec-title reveal" data-i18n="contact.title">Contact</h2>
+      <p class="sec-sub reveal" data-i18n="contact.subtitle">Dis-moi ton besoin et je te propose une solution simple.</p>
+
+      <div class="contact">
+        <div class="form reveal">
+          <div class="row">
+            <input id="name" placeholder="Nom" data-i18n-ph="form.name"/>
+            <input id="email" placeholder="Email" data-i18n-ph="form.email"/>
+          </div>
+          <div style="margin-top:10px;">
+            <input id="company" placeholder="Entreprise (optionnel)" data-i18n-ph="form.company"/>
+          </div>
+          <div style="margin-top:10px;">
+            <textarea id="msg" placeholder="Message" data-i18n-ph="form.message"></textarea>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+            <a class="btn primary" id="sendBtn" href="#" data-i18n="form.send">Envoyer</a>
+            <a class="btn" href="tel:+32492471019" data-i18n="form.call">Appeler</a>
+          </div>
+          <div class="hint" data-i18n="form.hint">Le bouton ouvre ton email avec le message pré-rempli.</div>
+        </div>
+
+        <div class="side">
+          <div class="panel reveal">
+            <h4 data-i18n="contact.quick">Contact rapide</h4>
+            <div class="kpi">
+              <div>📧 ismaeltahiri2909@gmail.com</div>
+              <div>📞 +32 492 47 10 19</div>
+              <div>📍 Belgique (FR/NL)</div>
+            </div>
+          </div>
+
+          <div class="panel reveal">
+            <h4 data-i18n="contact.get">Ce que tu reçois</h4>
+            <div style="color:var(--muted); line-height:1.7; font-size:13px;" data-i18n="contact.get2">
+              ✅ Scénarios Make documentés • ✅ règles anti-newsletter • ✅ brouillons + validation • ✅ rapport simple
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <div id="footText">© 2025 • ISM Automations • Automatisation IA • Belgique</div>
+      <div class="footlinks">
+        <a href="#services" data-i18n="nav.services">Services</a>
+        <a href="#usecases" data-i18n="nav.usecases">Cas d’usage</a>
+        <a href="#pricing" data-i18n="nav.pricing">Tarifs</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // i18n content
+    const I18N = {
+      fr: {
+        "nav.services":"Services",
+        "nav.usecases":"Cas d’usage",
+        "nav.process":"Méthode",
+        "nav.pricing":"Tarifs",
+        "nav.faq":"FAQ",
+        "nav.contact":"Contact",
+
+        "hero.badge":"Automatisation IA • Email • Support client • Process",
+        "hero.title":"Automatise tes emails et tes processus avec l’IA",
+        "hero.subtitle":"Je mets en place des automatisations IA (Make, Gmail, Google Workspace) pour que ton entreprise réponde plus vite, trie mieux, et gagne des heures chaque semaine.",
+        "hero.cta1":"Demander un audit gratuit",
+        "hero.cta2":"Voir les services",
+        "hero.trust":"Réponses automatiques sécurisées (brouillons + validation) • Tri URGENT/NON URGENT • Intégration en 48–72h",
+
+        "chips.fast":"+30% plus rapide",
+        "chips.setup":"48–72h setup",
+
+        "proof.title":"Exemple de flux (pro)",
+        "proof.a":"Triage intelligent",
+        "proof.a2":"Catégorie, urgence, tags, routage",
+        "proof.b":"Brouillons automatiques",
+        "proof.b2":"L’IA écrit, l’humain valide",
+        "proof.c":"Réponse auto (cas simples)",
+        "proof.c2":"Seulement cas simples + confiance élevée",
+        "proof.d":"Tableau de suivi",
+        "proof.d2":"Suivi du volume & performance",
+
+        "services.title":"Ce que je mets en place",
+        "services.subtitle":"Des automatisations utiles, faciles à piloter, avec des règles pour éviter les réponses “robot”.",
+        "services.templatesTitle":"Templates Make utilisés :",
+        "services.templates":"Email intelligent (tri + réponse), Formulaire client → Google Sheets, Lead → CRM → rappel automatique, Facture → suivi paiement, Support client → Slack/Teams.",
+        "services.s1.t":"📥 Triage d’emails par IA",
+        "services.s1.d":"Catégorisation, résumé, urgence et labels. Tu vois tout sans ouvrir 200 emails.",
+        "services.s1.b1":"Catégorie + priorité",
+        "services.s1.b2":"Résumé 2 lignes",
+        "services.s1.b3":"Routage auto",
+
+        "services.s2.t":"📝 Brouillons IA",
+        "services.s2.d":"L’IA rédige, toi tu valides. Zéro risque, énorme gain de temps.",
+        "services.s2.b1":"Ton pro / marque",
+        "services.s2.b2":"Signature auto",
+        "services.s2.b3":"Templates par cas",
+
+        "services.s3.t":"⚙️ Automatisation Make",
+        "services.s3.d":"Formulaire → Sheet/CRM → Slack/Teams → tâche → email. Clair et rapide.",
+        "services.s3.b1":"Make + Gmail",
+        "services.s3.b2":"Google Workspace",
+        "services.s3.b3":"Dashboard",
+
+        "services.s4.t":"🛡️ Sécurité & contrôle",
+        "services.s4.d":"Auto-reply seulement si cas simple + confiance élevée. Sinon validation humaine.",
+        "services.s4.b1":"Seuil confiance",
+        "services.s4.b2":"Blocage cas sensibles",
+        "services.s4.b3":"Logs & suivi",
+
+        "usecases.title":"Cas d’usage par métier",
+        "usecases.subtitle":"Des exemples concrets que nous déployons rapidement via Make + IA.",
+        "usecases.c1.t":"Garage",
+        "usecases.c1.b1":"Devis & RDV",
+        "usecases.c1.b2":"Urgences (panne)",
+        "usecases.c1.b3":"Relances clients",
+        "usecases.c2.t":"Restaurant",
+        "usecases.c2.b1":"Réservations",
+        "usecases.c2.b2":"Horaires / FAQ",
+        "usecases.c2.b3":"Commandes",
+        "usecases.c3.t":"E-commerce",
+        "usecases.c3.b1":"SAV",
+        "usecases.c3.b2":"Livraison",
+        "usecases.c3.b3":"Retours",
+        "usecases.c4.t":"Cabinet / Bureau",
+        "usecases.c4.b1":"Tri dossiers",
+        "usecases.c4.b2":"Docs/Drive",
+        "usecases.c4.b3":"Priorités",
+
+        "process.title":"Méthode simple (et pro)",
+        "process.subtitle":"Setup rapide, règles claires, et amélioration continue.",
+        "process.s1.k":"Audit",
+        "process.s1.t":"Audit (30 min)",
+        "process.s1.d":"On regarde tes emails types, tes règles, et les risques. Objectif: quick wins.",
+        "process.s2.k":"Prototype",
+        "process.s2.t":"Prototype (24–48h)",
+        "process.s2.d":"Je construis une version test: tri + brouillons + tableau de suivi.",
+        "process.s3.k":"Déploiement",
+        "process.s3.t":"Go-live",
+        "process.s3.d":"Activation des règles, sécurité et formation rapide pour l’équipe.",
+        "process.s4.k":"Optimisation",
+        "process.s4.t":"Optimisation",
+        "process.s4.d":"Amélioration des prompts + ajout d’automatisations selon ton activité.",
+
+        "pricing.title":"Tarifs",
+        "pricing.subtitle":"Transparents. Tu peux commencer petit, puis évoluer.",
+        "pricing.setup":"mise en place",
+        "pricing.once":"paiement unique",
+        "pricing.reco":"Recommandé",
+        "pricing.quote":"sur devis",
+        "pricing.from":"à partir de",
+        "pricing.choose":"Choisir",
+        "pricing.quoteBtn":"Demander un devis",
+        "pricing.supportTitle":"Support mensuel (option)",
+        "pricing.supportList":"Monitoring & corrections • Amélioration des prompts • Nouvelles automatisations • Support 48h",
+        "pricing.p1.name":"Starter",
+        "pricing.p1.desc":"Triage + résumé + urgence + tags",
+        "pricing.p1.b1":"1 boîte mail",
+        "pricing.p1.b2":"Jusqu’à 6 catégories",
+        "pricing.p1.b3":"Tags + règles",
+        "pricing.p1.b4":"Documentation",
+        "pricing.p2.name":"Pro",
+        "pricing.p2.desc":"Starter + brouillons + dashboard",
+        "pricing.p2.b1":"1–2 boîtes mail",
+        "pricing.p2.b2":"Brouillons Gmail",
+        "pricing.p2.b3":"Ton de marque",
+        "pricing.p2.b4":"Tableau de suivi",
+        "pricing.p3.name":"Business",
+        "pricing.p3.desc":"Routage avancé + CRM + KPI",
+        "pricing.p3.price":"Sur devis",
+        "pricing.p3.b1":"Multi-boîtes",
+        "pricing.p3.b2":"Intégrations CRM",
+        "pricing.p3.b3":"Sécurité + escalade",
+        "pricing.p3.b4":"SLA & reporting",
+
+        "faq.title":"FAQ",
+        "faq.subtitle":"Réponses rapides aux questions les plus fréquentes.",
+        "faq.q1":"Est-ce que l’IA répond à tout automatiquement ?",
+        "faq.a1":"Non. Par défaut, on met en place des brouillons avec validation humaine. Les réponses automatiques sont activées uniquement pour des cas simples, avec un seuil de confiance élevé.",
+        "faq.q2":"Comment évitez-vous les erreurs ?",
+        "faq.a2":"Règles de sécurité: demandes sensibles, mots-clés à risque, pièces jointes, et score de confiance. Si doute → validation humaine.",
+        "faq.q3":"Et si l’entreprise reçoit 200+ emails/jour ?",
+        "faq.a3":"L’IA trie, résume et priorise automatiquement. L’équipe voit tout de suite: urgences, factures, support, demandes commerciales…",
+        "faq.q4":"Vous utilisez des templates Make ?",
+        "faq.a4":"Oui. Templates Make (emails, formulaires, CRM, notifications) + personnalisation pour ton activité.",
+
+        "contact.title":"Contact",
+        "contact.subtitle":"Dis-moi ton besoin et je te propose une solution simple.",
+        "contact.quick":"Contact rapide",
+        "contact.get":"Ce que tu reçois",
+        "contact.get2":"✅ Scénarios Make documentés • ✅ règles anti-newsletter • ✅ brouillons + validation • ✅ rapport simple",
+        "contact.phone":"Téléphone",
+
+        "form.name":"Nom",
+        "form.email":"Email",
+        "form.company":"Entreprise (optionnel)",
+        "form.message":"Message",
+        "form.send":"Envoyer",
+        "form.call":"Appeler",
+        "form.hint":"Le bouton ouvre ton email avec le message pré-rempli."
+      },
+      nl: {
+        "nav.services":"Diensten",
+        "nav.usecases":"Use cases",
+        "nav.process":"Aanpak",
+        "nav.pricing":"Prijzen",
+        "nav.faq":"FAQ",
+        "nav.contact":"Contact",
+
+        "hero.badge":"AI-automatisatie • E-mail • Klantenservice • Processen",
+        "hero.title":"Automatiseer je e-mails en processen met AI",
+        "hero.subtitle":"Ik bouw AI-automatisaties (Make, Gmail, Google Workspace) zodat je bedrijf sneller reageert, beter sorteert en elke week uren wint.",
+        "hero.cta1":"Gratis audit aanvragen",
+        "hero.cta2":"Bekijk diensten",
+        "hero.trust":"Veilige antwoorden (concept + goedkeuring) • URGENT/NIET URGENT • Setup binnen 48–72u",
+
+        "chips.fast":"+30% sneller",
+        "chips.setup":"48–72u setup",
+
+        "proof.title":"Voorbeeld flow (pro)",
+        "proof.a":"Slimme triage",
+        "proof.a2":"Categorie, urgentie, labels, routing",
+        "proof.b":"Automatische concepten",
+        "proof.b2":"AI schrijft, mens keurt goed",
+        "proof.c":"Auto-reply (simpel)",
+        "proof.c2":"Alleen simpele cases + hoge confidence",
+        "proof.d":"Dashboard",
+        "proof.d2":"Volume & performance tracking",
+
+        "services.title":"Wat ik instel",
+        "services.subtitle":"Handige automatisaties, makkelijk te beheren, met regels zodat het nooit ‘robot’ aanvoelt.",
+        "services.templatesTitle":"Make templates:",
+        "services.templates":"Slimme e-mail (triage + antwoord), Formulier → Google Sheets, Lead → CRM → reminder, Factuur → betaling opvolging, Support → Slack/Teams.",
+        "services.s1.t":"📥 AI e-mailtriage",
+        "services.s1.d":"Categorisatie, samenvatting, urgentie en labels. Overzicht zonder 200 mails te openen.",
+        "services.s1.b1":"Categorie + prioriteit",
+        "services.s1.b2":"2-zin samenvatting",
+        "services.s1.b3":"Automatische routing",
+
+        "services.s2.t":"📝 Antwoord-concepten",
+        "services.s2.d":"AI schrijft, jij keurt goed. Geen risico, veel tijdwinst.",
+        "services.s2.b1":"Professionele toon",
+        "services.s2.b2":"Automatische handtekening",
+        "services.s2.b3":"Templates per case",
+
+        "services.s3.t":"⚙️ Make automatisatie",
+        "services.s3.d":"Formulier → Sheet/CRM → Slack/Teams → taak → e-mail. Helder en snel.",
+        "services.s3.b1":"Make + Gmail",
+        "services.s3.b2":"Google Workspace",
+        "services.s3.b3":"Dashboard",
+
+        "services.s4.t":"🛡️ Veiligheid & controle",
+        "services.s4.d":"Auto-reply enkel bij simpele cases + hoge confidence. Anders menselijke check.",
+        "services.s4.b1":"Confidence drempel",
+        "services.s4.b2":"Blok gevoelige cases",
+        "services.s4.b3":"Logs & opvolging",
+
+        "usecases.title":"Use cases per sector",
+        "usecases.subtitle":"Concrete voorbeelden die we snel deployen met Make + AI.",
+        "usecases.c1.t":"Garage",
+        "usecases.c1.b1":"Offertes & afspraken",
+        "usecases.c1.b2":"Urgenties (pech)",
+        "usecases.c1.b3":"Follow-ups",
+        "usecases.c2.t":"Restaurant",
+        "usecases.c2.b1":"Reservaties",
+        "usecases.c2.b2":"Openingsuren / FAQ",
+        "usecases.c2.b3":"Bestellingen",
+        "usecases.c3.t":"E-commerce",
+        "usecases.c3.b1":"Customer support",
+        "usecases.c3.b2":"Verzending",
+        "usecases.c3.b3":"Retouren",
+        "usecases.c4.t":"Kantoor",
+        "usecases.c4.b1":"Dossiers triage",
+        "usecases.c4.b2":"Docs/Drive",
+        "usecases.c4.b3":"Prioriteiten",
+
+        "process.title":"Simpele (professionele) aanpak",
+        "process.subtitle":"Snelle setup, duidelijke regels, en continue optimalisatie.",
+        "process.s1.k":"Audit",
+        "process.s1.t":"Audit (30 min)",
+        "process.s1.d":"We bekijken types e-mails, regels en risico’s. Doel: quick wins.",
+        "process.s2.k":"Prototype",
+        "process.s2.t":"Prototype (24–48u)",
+        "process.s2.d":"Ik bouw een test: triage + concepten + dashboard.",
+        "process.s3.k":"Go-live",
+        "process.s3.t":"Go-live",
+        "process.s3.d":"Regels + veiligheid + korte training voor je team.",
+        "process.s4.k":"Optimalisatie",
+        "process.s4.t":"Optimalisatie",
+        "process.s4.d":"Prompts verbeteren + nieuwe automatisaties toevoegen.",
+
+        "pricing.title":"Prijzen",
+        "pricing.subtitle":"Transparant. Start klein en schaal later.",
+        "pricing.setup":"setup",
+        "pricing.once":"eenmalig",
+        "pricing.reco":"Aanbevolen",
+        "pricing.quote":"offerte",
+        "pricing.from":"vanaf",
+        "pricing.choose":"Kies",
+        "pricing.quoteBtn":"Offerte aanvragen",
+        "pricing.supportTitle":"Maandelijkse support (optioneel)",
+        "pricing.supportList":"Monitoring & fixes • Prompt verbeteringen • Nieuwe automatisaties • Support binnen 48u",
+        "pricing.p1.name":"Starter",
+        "pricing.p1.desc":"Triage + samenvatting + urgentie + labels",
+        "pricing.p1.b1":"1 mailbox",
+        "pricing.p1.b2":"Tot 6 categorieën",
+        "pricing.p1.b3":"Labels + regels",
+        "pricing.p1.b4":"Documentatie",
+        "pricing.p2.name":"Pro",
+        "pricing.p2.desc":"Starter + concepten + dashboard",
+        "pricing.p2.b1":"1–2 mailboxen",
+        "pricing.p2.b2":"Gmail concepten",
+        "pricing.p2.b3":"Merktoon",
+        "pricing.p2.b4":"Dashboard",
+        "pricing.p3.name":"Business",
+        "pricing.p3.desc":"Geavanceerde routing + CRM + KPI",
+        "pricing.p3.price":"Offerte",
+        "pricing.p3.b1":"Multi-mailbox",
+        "pricing.p3.b2":"CRM integraties",
+        "pricing.p3.b3":"Veiligheid + escalatie",
+        "pricing.p3.b4":"SLA & reporting",
+
+        "faq.title":"FAQ",
+        "faq.subtitle":"Snelle antwoorden op de meest gestelde vragen.",
+        "faq.q1":"Antwoordt AI automatisch op alles?",
+        "faq.a1":"Nee. Standaard werken we met ‘concept + goedkeuring’. Auto-reply alleen bij simpele cases met hoge confidence.",
+        "faq.q2":"Hoe vermijden jullie fouten?",
+        "faq.a2":"Veiligheidsregels: gevoelige cases, risicowoorden, bijlagen, en confidence score. Bij twijfel → mens.",
+        "faq.q3":"Wat bij 200+ mails per dag?",
+        "faq.a3":"AI sorteert, vat samen en prioriteert automatisch. Je team ziet direct: urgent, facturen, support, sales…",
+        "faq.q4":"Gebruiken jullie Make templates?",
+        "faq.a4":"Ja. Make templates (e-mail, formulieren, CRM, notificaties) + personalisatie voor jouw business.",
+
+        "contact.title":"Contact",
+        "contact.subtitle":"Stuur je vraag — ik stel een simpele oplossing voor.",
+        "contact.quick":"Snel contact",
+        "contact.get":"Wat je krijgt",
+        "contact.get2":"✅ Make scenario’s gedocumenteerd • ✅ anti-newsletter regels • ✅ concept + goedkeuring • ✅ simpele rapportage",
+        "contact.phone":"Telefoon",
+
+        "form.name":"Naam",
+        "form.email":"E-mail",
+        "form.company":"Bedrijf (optioneel)",
+        "form.message":"Bericht",
+        "form.send":"Versturen",
+        "form.call":"Bellen",
+        "form.hint":"De knop opent je e-mail met een vooraf ingevuld bericht."
+      }
+    };
+
+    let lang = "fr";
+    const langBtn = document.getElementById("langBtn");
+
+    function applyI18n(){
+      document.documentElement.lang = lang;
+      langBtn.textContent = lang.toUpperCase();
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        if(I18N[lang][key]) el.textContent = I18N[lang][key];
+      });
+      document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
+        const key = el.getAttribute("data-i18n-ph");
+        if(I18N[lang][key]) el.setAttribute("placeholder", I18N[lang][key]);
+      });
+      const year = new Date().getFullYear();
+      document.getElementById("footText").textContent = `© ${year} • ISM Automations • ${lang==="fr"?"Automatisation IA":"AI-automatisatie"} • Belgique`;
+    }
+
+    langBtn.addEventListener("click", ()=>{
+      lang = (lang==="fr") ? "nl" : "fr";
+      applyI18n();
+    });
+
+    // Contact mailto builder
+    const sendBtn = document.getElementById("sendBtn");
+    function updateMailto(){
+      const name = document.getElementById("name").value || "";
+      const email = document.getElementById("email").value || "";
+      const company = document.getElementById("company").value || "";
+      const msg = document.getElementById("msg").value || "";
+      const subject = encodeURIComponent(lang==="fr" ? "Demande d’automatisation IA (audit)" : "AI automatisatie aanvraag (audit)");
+      const body = encodeURIComponent(
+        (lang==="fr" ? "Bonjour ISM Automations," : "Hallo ISM Automations,") + "\n\n" +
+        (lang==="fr" ? "Nom" : "Naam") + ": " + name + "\n" +
+        "Email: " + email + "\n" +
+        (lang==="fr" ? "Entreprise" : "Bedrijf") + ": " + company + "\n\n" +
+        (lang==="fr" ? "Message:" : "Bericht:") + "\n" + msg + "\n\n" +
+        (lang==="fr" ? "Merci !" : "Dankjewel!")
+      );
+      sendBtn.href = `mailto:ismaeltahiri2909@gmail.com?subject=${subject}&body=${body}`;
+    }
+    ["input","change"].forEach(evt=>{
+      document.getElementById("name").addEventListener(evt, updateMailto);
+      document.getElementById("email").addEventListener(evt, updateMailto);
+      document.getElementById("company").addEventListener(evt, updateMailto);
+      document.getElementById("msg").addEventListener(evt, updateMailto);
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add("show");
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(el=> io.observe(el));
+
+    // Init
+    applyI18n();
+    updateMailto();
+  </script>
 </body>
 </html>
-<!-- site ISM Automations -->
